@@ -2,7 +2,7 @@ const express = require('express');
 var bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const uuidv4 = require("uuid/v4");
+const uuidv4 = require("uuidv4");
 const aws_keys = require('./creds');
 var corsOptions = { origin: true, optionsSuccessStatus: 200 };
 app.use(cors(corsOptions));
