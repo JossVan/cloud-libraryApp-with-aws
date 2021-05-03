@@ -1,0 +1,14 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "virtual dreams",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Vanessa y Diana",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
