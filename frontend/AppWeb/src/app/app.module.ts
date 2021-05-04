@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -12,7 +12,10 @@ import { ExtraerComponent } from './extraer/extraer.component';
 import { FavoritosComponent } from './favoritos/favoritos.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CrearComponent } from './crear/crear.component';
-
+import { LoginComponent } from './login/login.component';
+import { FooterComponent } from './footer/footer.component';
+import { RegistroComponent } from './registro/registro.component';
+import {ApiService} from './services/api.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,13 +27,17 @@ import { CrearComponent } from './crear/crear.component';
     ExtraerComponent,
     FavoritosComponent,
     PerfilComponent,
-    CrearComponent
+    CrearComponent,
+    LoginComponent,
+    FooterComponent,
+    RegistroComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
