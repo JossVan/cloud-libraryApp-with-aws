@@ -8,6 +8,8 @@ import {BibliotecaComponent} from './biblioteca/biblioteca.component';
 import {VisorComponent} from './visor/visor.component';
 import {ExtraerComponent} from './extraer/extraer.component';
 import {CrearComponent} from './crear/crear.component';
+import {BotComponent} from './bot/bot.component';
+
 const routes: Routes = [
   {
     path:'home',
@@ -45,6 +47,10 @@ const routes: Routes = [
   {
     path:'crear',
     component:CrearComponent
+  },
+  {
+    path:'bot',
+    component:BotComponent
   }
 ];
 
