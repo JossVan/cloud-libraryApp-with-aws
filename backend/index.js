@@ -2,7 +2,7 @@ const express = require('express');
 var bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const uuidv4 = require("uuidv4");
+const uuid = require("uuid");
 const aws_keys = require('./creds');
 var corsOptions = { origin: true, optionsSuccessStatus: 200 };
 app.use(cors(corsOptions));
@@ -28,12 +28,11 @@ app.use((req, res, next) => {
 
 app.post('/registrarUsuario', async function (req, res) {
   Aregistrar = {
+      "correo":req.body.Email,
       "Usuario": req.body.Usuario,
       "Nombre": req.body.Nombre,
+      "Apellido":req.body.Apellido,
       "Password":req.body.Password,
-      "Foto": req.body.Foto,
-      "nombreFoto":req.body.nombreFoto,
-      "Etiquetas":""
   }
 const consulta = {
 TableName: 'Usuario',
@@ -50,74 +49,34 @@ ExpressionAttributeValues: {
 ddb.scan(consulta, async function(err, data) {
 if (err) {
   console.log("Error", err);
-  res.send(false);
+  res.send({msj:err,status:404});
 } else  {
 
   if(data.Items.length!=0){
-    res.send(false);
+    res.send({msj:data,status:200});
   }else {
-  let idUnico = uuidv4();
-  dir=  await SubirFotoUsuario(idUnico+"/FotoPerfil/"+Aregistrar.nombreFoto,Aregistrar.Foto);
+  // let idUnico = uuidv4();
+   // dir=  await SubirFotoUsuario(idUnico+"/FotoPerfil/"+Aregistrar.nombreFoto,Aregistrar.Foto);
 
-  dirURL ="http://practica2-g31-imagenes.s3-website.us-east-2.amazonaws.com/"+idUnico+"/FotoPerfil/"+Aregistrar.nombreFoto;
-  var params = {
-    /* S3Object: {
-      Bucket: "mybucket", 
-      Name: "mysourceimage"
-    }*/
-    Image: { 
-      Bytes: Buffer.from(Aregistrar.Foto, 'base64')
-    }, 
-    Attributes: ['ALL']
-  };
-
-  rekognition.detectFaces(params, function(err, data) {
-    if (err) {console.log("Error") 
-    res.send(false);
-    return
-    } 
-    else { 
-        
-        Aregistrar.Etiquetas=String(data.FaceDetails[0].AgeRange.Low)+" años mínimo y "
-        Aregistrar.Etiquetas+=String(data.FaceDetails[0].AgeRange.High)+" años máximo, "
-        if (data.FaceDetails[0].Smile.Value){
-          Aregistrar.Etiquetas+="Sonríe, "
-        }else{
-          Aregistrar.Etiquetas+="No sonríe, "
+    //dirURL ="http://practica2-g31-imagenes.s3-website.us-east-2.amazonaws.com/"+idUnico+"/FotoPerfil/"+Aregistrar.nombreFoto;
+    const UsuarioRegistrar = {
+      TableName:'Usuario',
+      Item: {
+      'correo':{S:Aregistrar.correo},
+      'Usuario': {S: Aregistrar.Usuario},
+      'Nombre': {S: Aregistrar.Nombre},
+      'Apellido':{S:Aregistrar.Apellido},
+      'Password': {S: Aregistrar.Password},
+      }
+      };
+      ddb.putItem(UsuarioRegistrar, function(err,data){
+        if(err){
+          res.send({msj:err,status:404});
         }
-        if(data.FaceDetails[0].Eyeglasses.Value){
-          Aregistrar.Etiquetas+="Usa lentes, "
-        }else{
-          Aregistrar.Etiquetas+="Sin lentes, "
+        else {
+          res.send({msj:data,status:100});
         }
-        if(data.FaceDetails[0].Gender.Value=="Female"){
-          Aregistrar.Etiquetas+="Mujer."
-        }else{
-          Aregistrar.Etiquetas+="Hombre."
-        }
-        console.log(Aregistrar.Etiquetas);
-        const UsuarioRegistrar = {
-        TableName:'Usuario',
-        Item: {
-        'ID_Usuario':{S:idUnico},
-        'Usuario': {S: Aregistrar.Usuario},
-        'Nombre': {S: Aregistrar.Nombre},
-        'Password': {S: Aregistrar.Password},
-        'Foto': {S: dirURL},
-        'Etiqueta':{S:Aregistrar.Etiquetas}
-        }
-        };
-              ddb.putItem(UsuarioRegistrar, function(err,data){
-                if(err){
-                  console.log(err)
-                  res.send(false);
-                }
-                else {
-                  res.send(true);
-                }
-              }); 
-    }
-  });
+      }); 
 
     }
   }
@@ -165,16 +124,17 @@ app.post('/ingresar',async function(req,res){
     };
     ddb.scan(consulta, async function(err, data) {
     if (err) {
-    console.log("Error ", err);
-    res.send(false);
+    res.send({msj:err,status:404});
     } else  {
       if(data.Items.length==0){
-        res.send(false);
+        res.send({msj:"inexistente",status:200});
       }else {
         if (data.Items[0].Password.S==Ingreso.Password){
-          res.send(data);
+          res.send({msj:data,status:100});
         }else{
-          res.send(false);
+          console.log(data.Items[0].Password.S)
+          console.log(Ingreso.Password)
+          res.send({msj:"la contraseña es incorrecta",status:300})
         }
     
       }

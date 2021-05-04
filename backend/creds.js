@@ -1,14 +1,14 @@
 let aws_keys = {
     dynamodb: {
         apiVersion: '2012-08-10',
-        region: 'us-east-2',
-        accessKeyId: "AKIA6GGYZM7UGM6SDQVT",
-        secretAccessKey: "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"
+        region: 'us-west-2',
+        accessKeyId: "AKIA6GGYZM7UAQENEUUM",
+        secretAccessKey: "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"
     },
     s3: {
-        region: 'us-east-2',
-        accessKeyId: "AKIA6GGYZM7UGELWVCNI",
-        secretAccessKey: "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"
+        region: 'us-west-2',
+        accessKeyId: "AKIA6GGYZM7UBYQRRJ7G",
+        secretAccessKey: "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"
     
     },
     rekognition:{
