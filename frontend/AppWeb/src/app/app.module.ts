@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import Amplify, {Interactions } from 'aws-amplify';
-
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -55,14 +53,13 @@ Amplify.configure({
     LoginComponent,
     FooterComponent,
     RegistroComponent,
-    ],
     CrearComponent,
     BotComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
