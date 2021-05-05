@@ -132,8 +132,6 @@ app.post('/ingresar',async function(req,res){
         if (data.Items[0].Password.S==Ingreso.Password){
           res.send({msj:data,status:100});
         }else{
-          console.log(data.Items[0].Password.S)
-          console.log(Ingreso.Password)
           res.send({msj:"la contraseña es incorrecta",status:300})
         }
     

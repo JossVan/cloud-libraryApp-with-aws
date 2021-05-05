@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './footer/footer.component';
 import { RegistroComponent } from './registro/registro.component';
 import {ApiService} from './services/api.service';
+import {ToastrModule} from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,12 +33,13 @@ import {ApiService} from './services/api.service';
     LoginComponent,
     FooterComponent,
     RegistroComponent,
-  ],
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
