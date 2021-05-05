@@ -9,7 +9,8 @@ import {VisorComponent} from './visor/visor.component';
 import {ExtraerComponent} from './extraer/extraer.component';
 import {CrearComponent} from './crear/crear.component';
 import {BotComponent} from './bot/bot.component';
-
+import {LoginComponent} from './login/login.component';
+import {RegistroComponent} from './registro/registro.component';
 const routes: Routes = [
   {
     path:'home',
@@ -17,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
@@ -51,6 +52,14 @@ const routes: Routes = [
   {
     path:'bot',
     component:BotComponent
+  },
+  {
+    path:'login',
+    component:LoginComponent
+  },
+  {
+    path:'registro',
+    component:RegistroComponent
   }
 ];
 
