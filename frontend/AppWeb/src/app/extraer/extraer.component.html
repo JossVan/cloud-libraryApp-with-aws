@@ -1,1 +1,27 @@
-<p>extraer works!</p>
+<app-navbar></app-navbar>
+
+<div class="container" style="padding-bottom:10%;padding-top:10%">
+  
+  <form>
+  <div class="col text-center">
+    <h3 for="exampleFormControlFile1">Sube tu imagen aquí</h3>
+    <br>
+     <input type="file" id="fotita" name="pic"  [(ngModel)] = "pic" accept="image/*" (change)=onPhotoSelected($event) #foto  >
+  </div>
+  <br><br>
+    <div class="imagen">
+    <img  [src]="photoSelected || '../../assets/images/user.png'" id="Previsualizacion" (click)="foto.click()" class="img-fluid" alt="Responsive image">
+    </div>
+     <br>
+     <button type="button" class="btn btn-primary btn-lg btn-block" (click)="analizarFoto()">Extraer texto</button>
+     
+     <br>
+</form>
+    <div class="col text-center">
+    <h3 for="exampleFormControlTextarea1">Texto extraído</h3>
+    <textarea class="form-control" id="exampleFormControlTextarea1" style="color:#000000" rows="5" name="texto" [(ngModel)]="texto" ></textarea>
+  </div>
+  
+</div>
+
+<app-footer></app-footer>
