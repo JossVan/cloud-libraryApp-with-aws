@@ -24,12 +24,13 @@ export class LoginComponent implements OnInit {
         let array=JSON.parse(result);
         if (array.status==100){
           let user={
-            usuario:array.Items[0].Usuario,
-            nombre:array.Items[0].Nombre,
-            apellido:array.Items[0].Apellido,
-            correo:array.Items[0].correo
+            usuario:array.msj.Items[0].Usuario.S,
+            nombre:array.msj.Items[0].Nombre.S,
+            apellido:array.msj.Items[0].Apellido.S,
+            correo:array.msj.Items[0].correo.S
           }
           localStorage.setItem('usuario',JSON.stringify(user))
+          console.log(array)
           this.toastr.success('¡Bienvenido!')
           this.home();
         }else if (array.status==300){

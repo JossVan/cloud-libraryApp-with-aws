@@ -29,4 +29,22 @@ export class ApiService {
     });
   }
 
+  editarDatos(UsuarioActual:string,UsuarioNuevo:string,Nombre:string,
+    Apellido:string,Correo:string,Password:string):Observable<any>{
+     
+    return this.httpClient.post(this.path+"/editarDatos",{
+      UsuarioActual:UsuarioActual,
+      UsuarioNuevo:UsuarioNuevo,
+      Nombre:Nombre,
+      Apellido:Apellido,
+      correo:Correo,
+      Password:Password,
+    })
+  }
+  extraerTexto(imagen:string){
+    return this.httpClient.post(this.path+"/extraerTexto",{
+      Imagen:imagen
+    })
+  }
+
 }

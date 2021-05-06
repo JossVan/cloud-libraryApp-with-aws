@@ -146,10 +146,9 @@ app.post('/editarDatos', async function(req,res){
     "UsuarioActual":req.body.UsuarioActual,
     "UsuarioNuevo":req.body.UsuarioNuevo,
     "Nombre":req.body.Nombre,
+    "Apellido":req.body.Apellido,
+    "correo":req.body.Correo,
     "Password":req.body.Password,
-    "Foto":req.body.Foto,
-    "nombreFoto":req.body.nombreFoto,
-    "Etiquetas":""
   };
 
   const buscar = {
@@ -167,70 +166,27 @@ app.post('/editarDatos', async function(req,res){
   ddb.scan(buscar,async function(err,data){
     if(!err){
       if (data.Items.length==1){
-        let id=data.Items[0].ID_Usuario.S;
+        let id=data.Items[0].correo.S;
         if(edicion.Password==data.Items[0].Password.S){
-          let dirURL="http://practica2-g31-imagenes.s3-website.us-east-2.amazonaws.com/"+id+"/FotoPerfil/"+edicion.nombreFoto;
-          if (edicion.Foto!=""){
-          dir=  await SubirFotoUsuario(id+"/FotoPerfil/"+edicion.nombreFoto,edicion.Foto);
-          dirURL ="http://practica2-g31-imagenes.s3-website.us-east-2.amazonaws.com/"+id+"/FotoPerfil/"+edicion.nombreFoto;
-          }
-          var params = {
-            /* S3Object: {
-              Bucket: "mybucket", 
-              Name: "mysourceimage"
-            }*/
-            Image: { 
-              Bytes: Buffer.from(edicion.Foto, 'base64')
-            }, 
-            Attributes: ['ALL']
+          const actualizados = {
+            TableName: "Usuario",
+            Key: {
+                "correo": { S: id}
+            },
+            ExpressionAttributeValues: {
+                ':Usuario': { S: edicion.UsuarioNuevo },
+                ':Nombre': { S: edicion.Nombre },
+                ':Apellido': { S: edicion.Apellido},
+              
+            },
+            UpdateExpression: "set Usuario = :Usuario, Nombre=:Nombre, Apellido=:Apellido"
           };
-        
-          rekognition.detectFaces(params, function(err, data) {
-            if (err) {console.log("Error") 
-            res.send(false);
-            return
-            } 
-            else { 
-                
-                edicion.Etiquetas=String(data.FaceDetails[0].AgeRange.Low)+" años mínimo y "
-                edicion.Etiquetas+=String(data.FaceDetails[0].AgeRange.High)+" años máximo, "
-                if (data.FaceDetails[0].Smile.Value){
-                  edicion.Etiquetas+="Sonríe, "
-                }else{
-                  edicion.Etiquetas+="No sonríe, "
-                }
-                if(data.FaceDetails[0].Eyeglasses.Value){
-                  edicion.Etiquetas+="Usa lentes, "
-                }else{
-                  edicion.Etiquetas+="Sin lentes, "
-                }
-                if(data.FaceDetails[0].Gender.Value=="Female"){
-                  edicion.Etiquetas+="Mujer."
-                }else{
-                  edicion.Etiquetas+="Hombre."
-                }
-                const actualizados = {
-                  TableName: "Usuario",
-                  Key: {
-                      "ID_Usuario": { S: id}
-                  },
-                  ExpressionAttributeValues: {
-                      ':Usuario': { S: edicion.UsuarioNuevo },
-                      ':Nombre': { S: edicion.Nombre },
-                      ':Foto': { S: dirURL},
-                      ':Etiqueta':{S:edicion.Etiquetas}
-                  },
-                  UpdateExpression: "set Usuario = :Usuario, Nombre=:Nombre, Foto=:Foto,Etiqueta=:Etiqueta"
-                };
-                ddb.updateItem(actualizados, function (err, data) {
-                  if (err) {
-                    res.send(false);
-                      console.error("Ha habido un error al querer modificar "+ err);
-                  } else{
-                  res.send({usuario:edicion.UsuarioNuevo, nombre:edicion.Nombre,
-                  Foto:dirURL, Etiqueta:edicion.Etiquetas});
-                  }
-                });
+          ddb.updateItem(actualizados, function (err, data) {
+            if (err) {
+              res.send({msj:err,status:404});
+                console.error("Ha habido un error al querer modificar "+ err);
+            } else{
+            res.send({msj:data,status:100});
             }
           });
         }
@@ -439,21 +395,17 @@ app.post('/Albums',async function(req,res){
 
 });
 
-app.post('/Albums/Fotos',async function(req,res){
-
-  var info={
-    "ID_Usuario":req.body.ID_Usuario
-  }
+app.get('/libros',async function(req,res){
 
    const consultas = {
-    TableName: 'Foto',
-    FilterExpression: "#ID = :data",
+    TableName: 'libros',
+    FilterExpression: "#activo = :activo",
     ExpressionAttributeNames: {
-      "#ID": "ID_Usuario",
+      "#activo": "activo",
     },
 
     ExpressionAttributeValues: {
-      ":data": { S: info.ID_Usuario },
+      ":activo": { N:1 },
     }
   };
 

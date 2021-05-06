@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule,DomSanitizer } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { FormsModule } from '@angular/forms';
 import Amplify, {Interactions } from 'aws-amplify';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -63,6 +65,7 @@ Amplify.configure({
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    BrowserAnimationsModule,
     ToastrModule.forRoot(),
   ],
   providers: [ApiService],

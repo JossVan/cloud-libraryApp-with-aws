@@ -10,9 +10,6 @@ export class AppComponent {
   title = 'frontend';
 
 
-  constructor(private router: Router) { 
-  }
-  irBot(){
-    this.router.navigate(['/bot']);
+  constructor() { 
   }
 }

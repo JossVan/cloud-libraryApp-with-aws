@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
   cerrarSesion(){
-    localStorage.removeAll();
+    localStorage.removeItem('usuario')
     this.router.navigate(['/login'])
   }
 
