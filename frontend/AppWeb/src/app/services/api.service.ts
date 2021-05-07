@@ -47,4 +47,27 @@ export class ApiService {
     })
   }
 
+  getLibros():Observable<any>{
+    return this.httpClient.get(this.path+"/libros");
+  }
+
+  setBiblioteca(codigo:String,Nombre:string,Autor:string,Libro:string,
+    Portada:string,Sinopsis:string,usuario:string):Observable<any>{
+    return this.httpClient.post(this.path+"/agregarBiblioteca",{
+      Codigo:codigo,
+      Nombre:Nombre,
+      Autor:Autor,
+      Libro:Libro,
+      Portada:Portada,
+      Sinopsis:Sinopsis,
+      Usuario:usuario
+    })
+  }
+
+  getBiblioteca(usuario:string){
+    return this.httpClient.post(this.path+"/getBiblioteca",{
+      Usuario:usuario
+    })
+  }
+
 }

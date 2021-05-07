@@ -55,10 +55,6 @@ if (err) {
   if(data.Items.length!=0){
     res.send({msj:data,status:200});
   }else {
-  // let idUnico = uuidv4();
-   // dir=  await SubirFotoUsuario(idUnico+"/FotoPerfil/"+Aregistrar.nombreFoto,Aregistrar.Foto);
-
-    //dirURL ="http://practica2-g31-imagenes.s3-website.us-east-2.amazonaws.com/"+idUnico+"/FotoPerfil/"+Aregistrar.nombreFoto;
     const UsuarioRegistrar = {
       TableName:'Usuario',
       Item: {
@@ -397,15 +393,19 @@ app.post('/Albums',async function(req,res){
 
 app.get('/libros',async function(req,res){
 
+  var info={
+    "activo":"1"
+  }
+
    const consultas = {
     TableName: 'libros',
-    FilterExpression: "#activo = :activo",
+    FilterExpression: "#ID = :activo",
     ExpressionAttributeNames: {
-      "#activo": "activo",
+      "#ID": "activo",
     },
 
     ExpressionAttributeValues: {
-      ":activo": { N:1 },
+      ":activo": { N: "1" }
     }
   };
 
@@ -417,10 +417,12 @@ app.get('/libros',async function(req,res){
       var arregloFotos = [];
       for (let i = 0; i < data.Items.length; i++) {
         datos={
-          ID_Usuario:data.Items[i].ID_Usuario.S,
-          NombreFoto:data.Items[i].NombreFoto.S,
-          Foto:data.Items[i].Foto.S,
-          Descripcion:data.Items[i].Descripcion.S
+          Codigo:data.Items[i].codigo.S,
+          Nombre:data.Items[i].nombre.S,
+          Autor:data.Items[i].autor.S,
+          Portada:data.Items[i].portada.S,
+          Libro:data.Items[i].libro.S,
+          Sinopsis:data.Items[i].sinopsis.S        
         }
         arregloFotos.push(datos);
       
@@ -429,54 +431,6 @@ app.get('/libros',async function(req,res){
     }
   });
 
-});
-
-//Comparando los rostros
-app.post('/compararfotos', async function (req, res) { 
-
-  var datos={
-    "imagen1":req.body.imagen1,
-    "imagen2":req.body.imagen2
-  }
-  imageToBase64(datos.imagen2) // Path to the image
-  .then(
-      (response) => {
-          var split=String(response).split(",",2);
-          var imagen=String(split[0])
-          var split2=datos.imagen1.split(",",2);
-          var imagen2=String(split2[1])
-          var params = {
-            
-            SourceImage: {
-                Bytes: Buffer.from(imagen, 'base64')     
-            }, 
-            TargetImage: {
-                Bytes: Buffer.from(imagen2, 'base64')    
-            },
-            SimilarityThreshold: '80'
-            
-           
-          };
-          rekognition.compareFaces(params, function(err, data) {
-            if (err) {res.json({valor: false, mensaje: err})} 
-            else {   
-                 Comparacion=data.FaceMatches;
-                 if (Comparacion.length!=0){
-                   res.send({valor:true, mensaje:"¡Bienvenido!"});
-                 }else{
-                   res.send({valor:false, mensaje:"¡Tu rostro no coinicide con la foto de perfil!"});
-                 }
-                 //  res.json({Comparacion: data.FaceMatches});      
-            }
-          });
-      }
-  )
-  .catch(
-      (error) => {
-          console.log(error); // Logs an error if there was one
-      }
-  )
-  
 });
 
 app.post('/extraerTexto', function (req, res) { 
@@ -522,72 +476,104 @@ app.post('/traducir', (req, res) => {
     }
   });
 });
-// ESTA PETICIÓN ES PARA CREAR LA CLASIFICACIÓN DE IMÁGENES
-app.post('/etiquetas', function (req, res) { 
-  var foto = req.body.Foto;
-  /*var datos={
-    "imagen1":req.body.imagen1,
-    "imagen2":req.body.imagen2
-  }*/
-  imageToBase64(foto) // Path to the image
-  .then(
-      (response) => {
-          var split=String(response).split(",",2);
-          var imagen=String(split[0])
-          var params = {
-            /* S3Object: {
-              Bucket: "mybucket", 
-              Name: "mysourceimage"
-            }*/
-            Image: { 
-              Bytes: Buffer.from(imagen, 'base64')
-            }, 
-            MaxLabels: 1
-          };
-          rekognition.detectLabels(params, function(err, data) {
-            if (err) {res.json({mensaje: "Error"})} 
-            else {   
-                   res.json({texto: data.Labels, mensaje:"OK"});      
-            }
-          });
+
+app.post('/agregarBiblioteca', async function (req, res) {
+  Aregistrar = {
+      "codigo":req.body.Codigo,
+      "Nombre": req.body.Nombre,
+      "Autor": req.body.Autor,
+      "Libro":req.body.Libro,
+      "Portada":req.body.Portada,
+      "Sinopsis":req.body.Sinopsis,
+      "Usuario":req.body.Usuario
+  }
+const consulta = {
+TableName: 'Biblioteca',
+FilterExpression: "#user = :datos",
+ExpressionAttributeNames: {
+    "#user": "codigo",
+},
+
+ExpressionAttributeValues: {
+    ":datos": { S: req.body.Codigo},
+}
+};
+
+ddb.scan(consulta, async function(err, data) {
+if (err) {
+  console.log("Error", err);
+  res.send({msj:err,status:404});
+} else  {
+  if(data.Items.length!=0){
+    res.send({msj:data,status:200});
+  }else {
+    const UsuarioRegistrar = {
+      TableName:'Biblioteca',
+      Item: {
+        "codigo":{S:req.body.Codigo},
+        "Nombre":{S:req.body.Nombre},
+        "Autor": {S:req.body.Autor},
+        "Libro":{S:req.body.Libro},
+        "Portada":{S:req.body.Portada},
+        "Sinopsis":{S:req.body.Sinopsis},
+        "Usuario":{S:req.body.Usuario}
       }
-  )
-  .catch(
-      (error) => {
-          console.log(error); // Logs an error if there was one
-      }
-  )
-  
+      };
+      ddb.putItem(UsuarioRegistrar, function(err,data){
+        if(err){
+          res.send({msj:err,status:404});
+        }
+        else {
+          res.send({msj:data,status:100});
+        }
+      }); 
+
+    }
+  }
+});
 });
 
-app.post('/fotoPerfil', async function (req,res){
+app.post('/getBiblioteca',async function(req,res){
 
-  var datos={
-    "ID":req.body.ID
+  var info={
+    "Usuario":req.body.Usuario
   }
 
-  direccion=datos.ID+"/FotoPerfil/";
-  var arreglo=[]
-  var params = {
-     Bucket: 'practica2-g31-imagenes', 
-    };
-  
-  result = s3.listObjectsV2(params,function(err,data){
-    
-     for (let i=0;i<data.Contents.length;i++){
-       let llave=String(data.Contents[i].Key).split("/",3)
-       let dir=llave[0]+"/"+llave[1]+"/"
-       if (dir==direccion){
-         fotos={
-           "Foto":"http://practica2-g31-imagenes.s3-website.us-east-2.amazonaws.com/"+data.Contents[i].Key
-         }
-         arreglo.push(fotos)
-       }
-     }
-     res.send(arreglo)
-  });
-});
+   const consultas = {
+    TableName: 'Biblioteca',
+    FilterExpression: "#ID = :Usuario",
+    ExpressionAttributeNames: {
+      "#ID": "Usuario",
+    },
 
+    ExpressionAttributeValues: {
+      ":Usuario": { S: info.Usuario }
+    }
+  };
+
+  ddb.scan(consultas, function (err, data) {
+    if (err) {
+      res.send("Error "+err);
+    } else {
+     
+      var arregloFotos = [];
+      for (let i = 0; i < data.Items.length; i++) {
+        datos={
+          Codigo:data.Items[i].codigo.S,
+          Nombre:data.Items[i].Nombre.S,
+          Autor:data.Items[i].Autor.S,
+          Portada:data.Items[i].Portada.S,
+          Libro:data.Items[i].Libro.S,
+          Sinopsis:data.Items[i].Sinopsis.S        
+        }
+        arregloFotos.push(datos);
+      
+      }
+      res.send(arregloFotos);
+    }
+  });
+
+});
 
 app.get('/', async function(req,res){
   res.send("hola");
