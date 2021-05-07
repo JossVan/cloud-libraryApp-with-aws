@@ -8,21 +8,27 @@
 <br>
 <br>
 <form>
+ <label for="formGroupExampleInput">Continua con tu historia...</label>
+ <select class="form-control" id="selector" (change)="onChange()" style="color:#000000" name="seleccion" [(ngModel)]="seleccion">
+  <option *ngFor="let item of array">{{item.Titulo}}</option>
+</select>
+<br>
+  <button type="button" class="btn btn-primary btn-lg btn-block">Escoger</button>
   <div class="form-group">
     <label for="formGroupExampleInput">Título de tu nueva historia</label>
-    <input type="text" class="form-control" id="formGroupExampleInput" style="color:#000000" placeholder="Título">
+    <input type="text" class="form-control" id="formGroupExampleInput" style="color:#000000" placeholder="Título" name="titulo" [(ngModel)]="titulo">
   </div>
   <div class="form-group">
     <label for="formGroupExampleInput2">Reseña o sinopisis de la historia</label>
-    <input type="text" class="form-control" style="color:#000000" id="formGroupExampleInput2" placeholder="Another input">
+    <input type="text" class="form-control" style="color:#000000" id="formGroupExampleInput2" placeholder="Sinopisis" name="sinopsis" [(ngModel)]="sinopsis">
   </div>
   </form>
     <div class="form-group">
     <label for="exampleFormControlTextarea1">Empieza tu historia aquí</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" style="color:#000000" rows="15"></textarea>
+    <textarea class="form-control" id="exampleFormControlTextarea1" style="color:#000000" rows="15" name="contenido" [(ngModel)]="contenido"></textarea>
   </div>
-  <button type="button" class="btn btn-primary btn-lg btn-block">Guardar nueva historia</button>
-<button type="button" class="btn btn-secondary btn-lg btn-block">Guardar cambios</button>
+  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="addHistory()">Guardar nueva historia</button>
+<button type="button" class="btn btn-secondary btn-lg btn-block" (click)="setHistory()">Guardar cambios</button>
 </div>
 
 

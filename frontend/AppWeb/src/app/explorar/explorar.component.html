@@ -5,69 +5,29 @@
             <br>
 			<h2 class="universal-h2 universal-h2-bckg">¡Descubre nuevas historias!</h2>
 			<div class="books">
-				<div class="single-book">
+
+				<div class="single-book" *ngFor="let item of array" style="padding-top:5%">
 					<a href="#" class="single-book__img">
-						<img src="../../assets/images/books-1.jpg" alt="single book and cd">
+						<img src={{item.Portada}} alt="{{item.Nombre}}" style="width:200px;heigth:200px">
 						<div class="single-book_download">
 							<img src="../../assets/images/download.svg" alt="book image">
 						</div>
 					</a>
-					<h4 class="single-book__title">Olivani</h4>
+					<h4 class="single-book__title">{{item.Nombre}}</h4>
 				
                     <div class="product_options">
-                        <div class="product_buy product_option"><img src="../../assets/images/biblioteca.svg" alt=""></div>
-                        <div class="product_fav product_option">+</div>
+                        <div class="product_buy product_option" (click)="leer(item.Codigo)"><img src="../../assets/images/biblioteca.svg" alt=""></div>
+                        <div class="product_fav product_option"(click)="agregarBiblioteca(item.Codigo)" >+</div>
                     </div>
 					<!-- star rating -->
 					
 					<!-- star rating end -->
 				</div>
-				<div class="single-book">
-					<a href="#" class="single-book__img">
-						<img src="../../assets/images/books-2.jpg" alt="single book and cd">
-						<div class="single-book_download">
-							<img src="../../assets/images/download.svg" alt="book image">
-						</div>
-					</a>
-					<h4 class="single-book__title">Molleon’s Life</h4>
-					
-                    <div class="product_options">
-                        <div class="product_buy product_option"><img src="../../assets/images/biblioteca.svg" alt=""></div>
-                        <div class="product_fav product_option">+</div>
-                    </div>
 					<!-- star rating -->
 				
 					<!-- star rating end -->
 				</div>
-				<div class="single-book">
-					<a href="#" class="single-book__img">
-						<img src="../../assets/images/books-3.jpg" alt="single book and cd">
-						<div class="single-book_download">
-							<img src="../../assets/images/download.svg" alt="book image">
-						</div>
-					</a>
-					<h4 class="single-book__title">Love is Love</h4>
-                   
-                    <div class="product_options">
-                        <div class="product_buy product_option"><img src="../../assets/images/biblioteca.svg" alt=""></div>
-                        <div class="product_fav product_option">+</div>
-                    </div>
-				</div>
-				<div class="single-book">
-					<a href="#" class="single-book__img">
-						<img src="../../assets/images/books-4.jpg" alt="single book and cd">
-						<div class="single-book_download">
-							<img src="../../assets/images/download.svg" alt="book image">
-						</div>
-					</a>
-					<h4 class="single-book__title">Give Me Also</h4>
-                    
-                    <div class="product_options">
-                        <div class="product_buy product_option"><img src="../../assets/images/biblioteca.svg" alt=""></div>
-                        <div class="product_fav product_option">+</div>
-                    </div>
-				</div>
-			</div>
+
 			<div class="books-brand-button">
 				<a href="#" class="brand-button">Ver más</a>
 			</div>

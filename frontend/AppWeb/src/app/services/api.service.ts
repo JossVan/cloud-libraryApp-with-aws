@@ -47,4 +47,68 @@ export class ApiService {
     })
   }
 
+  getLibros():Observable<any>{
+    return this.httpClient.get(this.path+"/libros");
+  }
+
+  setBiblioteca(codigo:String,Nombre:string,Autor:string,Libro:string,
+    Portada:string,Sinopsis:string,usuario:string):Observable<any>{
+    return this.httpClient.post(this.path+"/agregarBiblioteca",{
+      Codigo:codigo,
+      Nombre:Nombre,
+      Autor:Autor,
+      Libro:Libro,
+      Portada:Portada,
+      Sinopsis:Sinopsis,
+      Usuario:usuario
+    })
+  }
+
+  getBiblioteca(usuario:string){
+    return this.httpClient.post(this.path+"/getBiblioteca",{
+      Usuario:usuario
+    })
+  }
+
+  eliminarBiblioteca(codigo:string){
+    return this.httpClient.post(this.path+"/eliminarBiblioteca",{
+      codigo:codigo
+    })
+  }
+
+  addFavorite(codigo:string,fav:string):Observable<any>{
+    return this.httpClient.post(this.path+"/favoritos",{
+      codigo:codigo,
+      Favorito:fav,
+    })
+  }
+
+  getFavorite(usuario:string):Observable<any>{
+    return this.httpClient.post(this.path+"/getFavoritos",{
+      usuario:usuario
+    })
+  }
+
+  addHistory(user:string,titulo:string,sinopsis:string,contenido:string):Observable<any>{
+    return this.httpClient.post(this.path+"/addHistory",{
+      user:user,
+      titulo:titulo,
+      sinopsis:sinopsis,
+      contenido:contenido
+    })
+  }
+  getHistories(usuario:string):Observable<any>{
+    return this.httpClient.post(this.path+"/getHistories",{
+      usuario:usuario
+    })
+  }
+  setHistories(codigo:string,Usuario:string,Titulo:string,Sinopsis:string,Contenido:string){
+    return this.httpClient.post(this.path+"/setHistories",{
+      usuario:Usuario,
+      codigo:codigo,
+      Titulo:Titulo,
+      Sinopsis:Sinopsis,
+      Contenido:Contenido
+    })
+  }
 }
