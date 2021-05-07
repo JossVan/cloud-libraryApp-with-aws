@@ -70,4 +70,23 @@ export class ApiService {
     })
   }
 
+  eliminarBiblioteca(codigo:string){
+    return this.httpClient.post(this.path+"/eliminarBiblioteca",{
+      codigo:codigo
+    })
+  }
+
+  addFavorite(codigo:string,fav:string):Observable<any>{
+    return this.httpClient.post(this.path+"/favoritos",{
+      codigo:codigo,
+      Favorito:fav,
+    })
+  }
+
+  getFavorite(usuario:string):Observable<any>{
+    return this.httpClient.post(this.path+"/getFavoritos",{
+      usuario:usuario
+    })
+  }
+
 }

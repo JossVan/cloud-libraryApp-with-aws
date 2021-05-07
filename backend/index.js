@@ -219,6 +219,28 @@ app.post('/editarDatos', async function(req,res){
 });
 });
 
+app.post('/eliminarBiblioteca',async function(req,res){
+
+  var info={
+    "codigo":req.body.codigo
+  }
+  console.log(info.codigo)
+  const consulta={
+    TableName: "Biblioteca",
+    Key: {
+        "codigo": { S: info.codigo}
+    },
+  }
+  ddb.deleteItem(consulta, async function(err, data) {
+    if (err) {
+      console.log("Error", err);
+      res.send({msj:err,status:404});
+    } else  {
+      res.send({msj:data,status:100})
+    }
+});
+});
+
 app.post("/crearAlbum",async function(req,res){
 
   var info={
@@ -516,11 +538,13 @@ if (err) {
         "Libro":{S:req.body.Libro},
         "Portada":{S:req.body.Portada},
         "Sinopsis":{S:req.body.Sinopsis},
-        "Usuario":{S:req.body.Usuario}
+        "Usuario":{S:req.body.Usuario},
+        "Favorito":{N:"0"}
       }
       };
       ddb.putItem(UsuarioRegistrar, function(err,data){
         if(err){
+          console.log(err)
           res.send({msj:err,status:404});
         }
         else {
@@ -570,6 +594,79 @@ app.post('/getBiblioteca',async function(req,res){
       
       }
       res.send(arregloFotos);
+    }
+  });
+
+});
+
+app.post('/favoritos', async function(req,res){
+
+  var edicion={
+    "Codigo":req.body.codigo,
+    "Favorito":req.body.Favorito
+  };
+  const actualizados = {
+    TableName: "Biblioteca",
+    Key: {
+        "codigo": { S: edicion.Codigo}
+    },
+    ExpressionAttributeValues: {
+        ':Favorito': { N: edicion.Favorito },      
+    },
+    UpdateExpression: "set Favorito = :Favorito"
+  };
+  ddb.updateItem(actualizados, function (err, data) {
+    if (err) {
+      res.send({msj:err,status:404});
+        console.error(err);
+    } else{
+    res.send({msj:data,status:100});
+    }
+  });
+});
+
+app.post('/getFavoritos',async function(req,res){
+
+  var info={
+    "Favorito":"1",
+    "Usuario":req.body.usuario
+  }
+
+   const consultas = {
+    TableName: 'Biblioteca',
+    FilterExpression: "#Favorito = :Favorito and #id=:Usuario",
+    ExpressionAttributeNames: {
+      "#Favorito": "Favorito",
+      "#id":"Usuario",
+    },
+
+    ExpressionAttributeValues: {
+      ":Favorito": { N: "1" },
+      ":Usuario":{S:info.Usuario}
+    }
+  };
+
+  ddb.scan(consultas, function (err, data) {
+    if (err) {
+      res.send({msj:err,status:404});
+      console.log(err)
+    } else {
+     
+      var arregloFotos = [];
+      
+      for (let i = 0; i < data.Items.length; i++) {
+        datos={
+          Codigo:data.Items[i].codigo.S,
+          Nombre:data.Items[i].Nombre.S,
+          Autor:data.Items[i].Autor.S,
+          Portada:data.Items[i].Portada.S,
+          Libro:data.Items[i].Libro.S,
+          Sinopsis:data.Items[i].Sinopsis.S        
+        }
+        arregloFotos.push(datos);
+      
+      }
+      res.send({msj:arregloFotos,status:100});
     }
   });
 

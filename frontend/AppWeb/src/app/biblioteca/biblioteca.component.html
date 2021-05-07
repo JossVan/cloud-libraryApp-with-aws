@@ -14,16 +14,20 @@
 					<div class="single-blog__text">
 						<h4>{{item.Nombre}}</h4>
 						<span>{{item.Autor}}</span>
-						<button type="button" class="btn btn-outline-success btn-lg btn-block">Agregar a mis favoritos</button>
+						<button type="button" class="btn btn-outline-success btn-lg btn-block" (click)="agregar(item.Codigo)">Agregar a mis favoritos</button>
 						<p style="text-align:justify">{{item.Sinopsis}}</p>
                         <div style="text-align:center">
 						
-							<button type="button" class="btn btn-warning btn-sm" (click)="ir(item.Codigo)">Leer ahora</button>
+							<button type="button" class="btn btn-warning btn-sm" (click)="ir(item.Libro)">Leer ahora</button>
 							<button type="button" class="btn btn-warning btn-sm">Traducir libro</button>
 							<button type="button" class="btn btn-warning btn-sm">Escuchar libro</button>
                       
                         </div>
-                    </div>
+						<br>
+						<div style="text-align:center">
+						<button type="button" class="btn btn-danger" (click)="eliminar(item.Codigo)">Eliminar de mi biblioteca</button>
+						 </div>
+				    </div>
 				</div>
 			</div>
 		</div>
