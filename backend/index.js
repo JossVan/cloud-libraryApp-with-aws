@@ -672,6 +672,132 @@ app.post('/getFavoritos',async function(req,res){
 
 });
 
+app.post('/addHistory', async function (req, res) {
+  let n= req.body.titulo;
+  Aregistrar = {
+      "Codigo":req.body.user+n.replace(/ /g, ""),
+      "Usuario": req.body.user,
+      "Titulo": req.body.titulo,
+      "Sinopsis":req.body.sinopsis,
+      "Contenido":req.body.contenido
+  }
+const consulta = {
+TableName: 'Historias',
+FilterExpression: "#user = :datos",
+ExpressionAttributeNames: {
+    "#user": "codigo",
+},
+
+ExpressionAttributeValues: {
+    ":datos": { S:Aregistrar.Codigo},
+}
+};
+
+ddb.scan(consulta, async function(err, data) {
+if (err) {
+  console.log(err)
+  res.send({msj:err,status:404});
+} else  {
+  if(data.Items.length!=0){
+    res.send({msj:data,status:200});
+  }else {
+    const UsuarioRegistrar = {
+      TableName:'Historias',
+      Item: {
+        "codigo":{S:Aregistrar.Codigo},
+        "Usuario":{S:Aregistrar.Usuario},
+        "Titulo":{S:Aregistrar.Titulo},
+        "Sinopsis":{S:Aregistrar.Sinopsis},
+        "Contenido":{S:Aregistrar.Contenido},
+      }
+      };
+      ddb.putItem(UsuarioRegistrar, function(err,data){
+        if(err){
+          res.send({msj:err,status:404});
+        }
+        else {
+          res.send({msj:data,status:100});
+        }
+      }); 
+
+    }
+  }
+});
+});
+app.post('/getHistories',async function(req,res){
+
+  var info={
+    "Usuario":req.body.usuario
+  }
+
+   const consultas = {
+    TableName: 'Historias',
+    FilterExpression: "#id=:Usuario",
+    ExpressionAttributeNames: {
+    
+      "#id":"Usuario",
+    },
+
+    ExpressionAttributeValues: {
+      ":Usuario":{S:info.Usuario}
+    }
+  };
+
+  ddb.scan(consultas, function (err, data) {
+    if (err) {
+      res.send({msj:err,status:404});
+      console.log(err)
+    } else {
+     
+      var arregloFotos = [];
+      
+      for (let i = 0; i < data.Items.length; i++) {
+        datos={
+          Titulo:data.Items[i].Titulo.S,
+          Sinopsis:data.Items[i].Sinopsis.S,
+          Contenido:data.Items[i].Contenido.S,
+          Codigo:data.Items[i].codigo.S,    
+        }
+        arregloFotos.push(datos);
+      
+      }
+      res.send({msj:arregloFotos,status:100});
+    }
+  });
+
+});
+app.post('/setHistories', async function(req,res){
+
+  var edicion={
+    
+    "Codigo":req.body.codigo,
+    "Usuario":req.body.Usuario,
+    "Titulo":req.body.Titulo,
+    "Sinopsis":req.body.Sinopsis,
+    "Contenido":req.body.Contenido
+  };
+  const actualizados = {
+    TableName: "Historias",
+    Key: {
+        "codigo": { S: edicion.Codigo}
+    },
+    ExpressionAttributeValues: {
+        ':Titulo': { S: edicion.Titulo },    
+        ':Sinopsis':{S: edicion.Sinopsis},
+        ':Contenido': {S:edicion.Contenido},
+        
+    },
+    UpdateExpression: "set Titulo = :Titulo, Sinopsis=:Sinopsis, Contenido=:Contenido"
+  };
+  ddb.updateItem(actualizados, function (err, data) {
+    if (err) {
+      res.send({msj:err,status:404});
+        console.error(err);
+    } else{
+    res.send({msj:data,status:100});
+    }
+  });
+});
 app.get('/', async function(req,res){
   res.send("hola");
 });

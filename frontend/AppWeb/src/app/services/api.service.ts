@@ -89,4 +89,26 @@ export class ApiService {
     })
   }
 
+  addHistory(user:string,titulo:string,sinopsis:string,contenido:string):Observable<any>{
+    return this.httpClient.post(this.path+"/addHistory",{
+      user:user,
+      titulo:titulo,
+      sinopsis:sinopsis,
+      contenido:contenido
+    })
+  }
+  getHistories(usuario:string):Observable<any>{
+    return this.httpClient.post(this.path+"/getHistories",{
+      usuario:usuario
+    })
+  }
+  setHistories(codigo:string,Usuario:string,Titulo:string,Sinopsis:string,Contenido:string){
+    return this.httpClient.post(this.path+"/setHistories",{
+      usuario:Usuario,
+      codigo:codigo,
+      Titulo:Titulo,
+      Sinopsis:Sinopsis,
+      Contenido:Contenido
+    })
+  }
 }
