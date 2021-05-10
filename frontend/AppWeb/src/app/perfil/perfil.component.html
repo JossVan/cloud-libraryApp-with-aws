@@ -1,0 +1,41 @@
+
+<app-navbar></app-navbar>
+
+<div class="container" style="padding-top:10% ; padding-bottom:10%">
+<h3 style="text-align:center">Tu Información</h3>
+<br>
+<br>
+  <div class="form-row">
+  <div class="form-group col-md-6">
+      <label for="inputEmail4">Usuario</label>
+      <input type="email" class="form-control" style="color:#000000" id="inputEmail4" placeholder="Usuario" name="usuario" [(ngModel)]="usuario">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Email</label>
+      <input type="email" class="form-control" style="color:#000000" id="inputEmail4" placeholder="Email" name="email" [(ngModel)]="email" readonly>
+    </div>
+        <div class="form-group col-md-6">
+      <label for="inputEmail4">Nombre</label>
+      <input type="email" class="form-control" style="color:#000000" id="inputEmail4" placeholder="Nombre" nombre="nombre" [(ngModel)]="nombre">
+    </div>
+        <div class="form-group col-md-6">
+      <label for="inputEmail4">Apellido</label>
+      <input type="email" class="form-control" style="color:#000000" id="inputEmail4" placeholder="Apellido" name="apellido" [(ngModel)]="apellido">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">Password</label>
+      <input type="password" class="form-control" style="color:#000000" id="inputPassword4" placeholder="Password" name="pass" [(ngModel)]="pass">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gridCheck">
+      <label class="form-check-label" for="gridCheck">
+        Check me out
+      </label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" (click)="editar()">Guardar cambios</button>
+</div>
+
+<app-footer></app-footer>

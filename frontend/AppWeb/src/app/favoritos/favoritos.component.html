@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+<body>
+
+	<!-- Blog -->
+	<section class="fh5co-blog">
+		<div class="site-container" style="padding-top:10%">
+			<h2 class="universal-h2 universal-h2-bckg">Mis libros favoritos</h2>
+			<div class="blog-slider blog-inner" *ngFor="let item of array">
+				<div class="single-blog">
+					<div class="single-blog__img">
+						<img src={{item.Portada}} style="height:400px; width:300px" alt="blog image">
+					</div>
+					<div class="single-blog__text" style="text-align:justify">
+						<h4>{{item.Nombre}}</h4>
+						<span>{{item.Autor}}</span>
+						<p>{{item.Sinopsis}}</p>
+                        <div style="text-align:center">
+						
+							<button type="button" class="btn btn-warning btn-sm" (click)="ir(item.Libro)" >Leer ahora</button>
+							<button type="button" class="btn btn-warning btn-sm"(click)="traducir(item.Libro)" >Traducir libro</button>
+							<button type="button" class="btn btn-warning btn-sm" (click)="extraerTexto(item.Libro)">Escuchar libro</button>
+                      
+                        </div>
+						<br>
+						<div style="text-align:center">
+						<button type="button" class="btn btn-danger" (click)="quitar(item.Codigo)">Eliminar de mis favorito</button>
+						 </div>
+                    </div>
+				</div>
+				
+				
+			</div>
+		</div>
+	</section>
+	<!-- Blog end -->
+
+    	<!-- Counter -->
+	<div class="fh5co-counter counters">
+		<div class="counter-inner site-container">
+			<div class="single-count">
+				<span class="count" data-count="50">0</span>
+				<div class="single-count__text" style="width: auto; height: auto;">
+					<img src="../../assets/images/counter-1.png" alt="counter icon">
+					<p>Books</p>
+				</div>
+			</div>
+			<div class="single-count">
+				<span class="count" data-count="600">0</span>
+				<div class="single-count__text">
+					<img src="../../assets/images/counter-2.png" alt="counter icon">
+					<p>Pages</p>
+				</div>
+			</div>
+			<div class="single-count">
+				<span class="count" data-count="2000">0</span>
+				<div class="single-count__text">
+					<img src="../../assets/images/counter-3.png" alt="counter icon">
+					<p>Sales</p>
+				</div>
+			</div>
+			<div class="single-count">
+				<span class="count" data-count="125">0</span>
+				<div class="single-count__text">
+					<img src="../../assets/images/counter-4.png" alt="counter icon">
+					<p>Awards</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Counter -->
+</body>

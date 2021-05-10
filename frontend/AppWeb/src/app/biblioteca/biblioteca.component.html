@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+<body>
+
+	<!-- Blog -->
+	<section class="fh5co-blog">
+		<div class="site-container" style="padding-top:10%">
+			<h2 class="universal-h2 universal-h2-bckg">Mis libros</h2>
+			<div class="blog-slider blog-inner" >
+			
+				<div class="single-blog" *ngFor="let item of array" >
+					<div class="single-blog__img">
+						<img src={{item.Portada}} style="height:400px; width:300px" alt="blog image">
+					</div>
+					<div class="single-blog__text">
+						<h4>{{item.Nombre}}</h4>
+						<span>{{item.Autor}}</span>
+						<button type="button" class="btn btn-outline-success btn-lg btn-block" (click)="agregar(item.Codigo)">Agregar a mis favoritos</button>
+						<p style="text-align:justify">{{item.Sinopsis}}</p>
+                        <div style="text-align:center">
+						
+							<button type="button" class="btn btn-warning btn-sm" (click)="ir(item.Libro)">Leer ahora</button>
+							<button type="button" class="btn btn-warning btn-sm" (click)="traducir(item.Libro)">Traducir libro</button>
+							<button type="button" class="btn btn-warning btn-sm" (click)="extraerTexto(item.Libro)">Escuchar libro</button>
+                      
+                        </div>
+						<br>
+						<div style="text-align:center">
+						<button type="button" class="btn btn-danger" (click)="eliminar(item.Codigo)">Eliminar de mi biblioteca</button>
+						 </div>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Blog end -->
+</body>
+<app-footer></app-footer>
