@@ -14,6 +14,7 @@
 </select>
 <br>
   <button type="button" class="btn btn-primary btn-lg btn-block">Escoger</button>
+  
   <div class="form-group">
     <label for="formGroupExampleInput">Título de tu nueva historia</label>
     <input type="text" class="form-control" id="formGroupExampleInput" style="color:#000000" placeholder="Título" name="titulo" [(ngModel)]="titulo">
@@ -23,14 +24,40 @@
     <input type="text" class="form-control" style="color:#000000" id="formGroupExampleInput2" placeholder="Sinopisis" name="sinopsis" [(ngModel)]="sinopsis">
   </div>
   </form>
+  <div id="aqui">
+    <img id="img" src='../../assets/portada2.jpg' width="200px" height="250px">
+    <br>
+    <br>
+  </div>
+  <button type="button" class="btn btn-warning btn-lg btn-block" (click)="show()">Aplicar Cambios</button>
+    <label for="exampleFormControlTextarea1">Empezar tu historia &nbsp;&nbsp;&nbsp;</label>
+    
+    <!--<button type="button" id="dictar" class="btn btn-success" (click)="grabar()">Dictar Historia</button>
+    <button type="button" id="descargar" class="btn btn-success" style="display: none;">Descargar Audio</button>
+    <audio id="player" style="display:none;" controls></audio>-->
     <div class="form-group">
-    <label for="exampleFormControlTextarea1">Empieza tu historia aquí</label>
+      <div id="contentPlayer">
+        <div id="footer" class="shadow">
+          <div id="playerAudio"></div>
+          <label for="exampleFormControlTextarea1">&nbsp;&nbsp;&nbsp; Grabar:   &nbsp;&nbsp;&nbsp;</label>
+          <button id="buttonDownload"class="button transition" [disabled]="isRecording" (click)="record()"><i style="font-size: large; margin-top: 10px;" class="fas fa-microphone"></i></button>
+          <button  id="buttonMicrophone" class="button transition"[disabled]="!isRecording" (click)="stop()"><i style="font-size: large; margin-top: 10px;" class="fas fa-stop"></i></button>
+
+        </div>
+      </div>
+    <hr>
     <textarea class="form-control" id="exampleFormControlTextarea1" style="color:#000000" rows="15" name="contenido" [(ngModel)]="contenido"></textarea>
   </div>
   <button type="button" class="btn btn-primary btn-lg btn-block" (click)="addHistory()">Guardar nueva historia</button>
 <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="setHistory()">Guardar cambios</button>
 </div>
-
+<script>
+  navigator.mediaDevices
+  .getUserMedia({ audio: true, video: false })
+  .then((stream) => {
+    globalStream = stream;
+  });
+</script>
 
 
 

@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from '@angular/forms';
 import Amplify, {Interactions } from 'aws-amplify';
+import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,9 +37,30 @@ Amplify.configure({
         "region": "us-east-1",
       },
     }
-  }
+  },
+  Predictions:{
+    "convert":{
+      "transcription": {
+        "region": "us-east-1",
+        "proxy": false,
+        "defaults": {
+            "language": "es-US"
+        }
+    }
+    }
+  },
+  interpret: {
+    "interpretText": {
+        "region": "us-east-1",
+        "proxy": false,
+        "defaults": {
+            "type": "ALL"
+        }
+    }
+}
 });
 
+Amplify.addPluggable(new AmazonAIPredictionsProvider());
 
 @NgModule({
   declarations: [
