@@ -111,4 +111,9 @@ export class ApiService {
       Contenido:Contenido
     })
   }
+  convertir(file:Blob){
+    return this.httpClient.post(this.path+"/convertir",{
+      file:file,
+    })
+  }
 }

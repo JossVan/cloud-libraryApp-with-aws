@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Interactions } from 'aws-amplify';
 import { Router } from '@angular/router';
+import { CrearComponent } from '../crear/crear.component';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class BotComponent implements OnInit {
   }    
   
   regresar(){
-    this.router.navigate(['/perfil']);
+    this.router.navigate(['/crear']);
   }
 
   chatear(who:string,text:string){
@@ -159,10 +160,9 @@ export class BotComponent implements OnInit {
     if(response && !response.message){
       this.chatear("you","Los cambios han sido agregados! \n Espero platiquemos pronto...!");
       if(response.slots.slotTwo != null || response.slots.slotTwo != undefined){
-        const portada={
-          portadaLibro:response.slots.slotTwo
-        }
-        console.log(portada);
+        
+        localStorage.setItem('portada',response.slots.slotTwo)
+       // CrearComponent.show(response.slots.slotTwo);
   
       }else{
         const info={
@@ -171,7 +171,7 @@ export class BotComponent implements OnInit {
           cumple:response.slots.Cumple
         }
         console.log(info);
-  
+        localStorage.setItem('info',JSON.stringify(info))
       }
       
     }

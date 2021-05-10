@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors');
 const uuid = require("uuid");
 const aws_keys = require('./creds');
+var ffmpeg = require('ffmpeg');
 var corsOptions = { origin: true, optionsSuccessStatus: 200 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: '10mb', extended: true }));
@@ -800,4 +801,18 @@ app.post('/setHistories', async function(req,res){
 });
 app.get('/', async function(req,res){
   res.send("hola");
+});
+
+app.post('/convertir',async function(req,res){
+
+  var comprehend = new AWS.Comprehend();
+  var params={"datos":req.body.data};
+  comprehend.batchDetectDominantLanguage(params, function (err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else     console.log(data);           // successful response
+  });
+   
+
+  
+
 });
