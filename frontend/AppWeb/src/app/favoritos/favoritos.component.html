@@ -8,7 +8,7 @@
 			<div class="blog-slider blog-inner" *ngFor="let item of array">
 				<div class="single-blog">
 					<div class="single-blog__img">
-						<img src={{item.Portada}} style="height=400px; width:400px" alt="blog image">
+						<img src={{item.Portada}} style="height:400px; width:300px" alt="blog image">
 					</div>
 					<div class="single-blog__text" style="text-align:justify">
 						<h4>{{item.Nombre}}</h4>
@@ -17,8 +17,8 @@
                         <div style="text-align:center">
 						
 							<button type="button" class="btn btn-warning btn-sm" (click)="ir(item.Libro)" >Leer ahora</button>
-							<button type="button" class="btn btn-warning btn-sm">Traducir libro</button>
-							<button type="button" class="btn btn-warning btn-sm">Escuchar libro</button>
+							<button type="button" class="btn btn-warning btn-sm"(click)="traducir(item.Libro)" >Traducir libro</button>
+							<button type="button" class="btn btn-warning btn-sm" (click)="extraerTexto(item.Libro)">Escuchar libro</button>
                       
                         </div>
 						<br>

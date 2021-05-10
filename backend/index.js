@@ -8,6 +8,11 @@ var corsOptions = { origin: true, optionsSuccessStatus: 200 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: '10mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
+const PDFExtract = require('pdf.js-extract').PDFExtract;
+const pdfExtract = new PDFExtract();
+var https=require('https');
+const fs= require('fs');
+const options={};
 var port=8000;
 app.listen(port, () => console.log('Servidor corriendo en el puerto 8000'));
 var AWS = require('aws-sdk');
@@ -16,6 +21,8 @@ const ddb = new AWS.DynamoDB(aws_keys.dynamodb);
 const s3= new AWS.S3(aws_keys.s3);
 const rekognition=new AWS.Rekognition(aws_keys.rekognition);
 const translate = new AWS.Translate(aws_keys.translate);
+const Polly=new AWS.Polly(aws_keys.polly);
+var file =fs.createWriteStream("pdf/file.pdf");
  
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -79,24 +86,26 @@ if (err) {
 });
 });
 
-  async function SubirFotoUsuario(direccion, base64){
+  async function SubirAudio(base64){
     return new Promise((resolve, reject) => {
       buffer = new Buffer.from(base64,'base64')
-      
+      direccion= "audios/audio.mp3"
       const params = {
-        Bucket: "practica2-g31-imagenes",
+        Bucket: "librossemi1",
         Key: direccion,
         Body: buffer,
         ACL:'public-read',
         ContentEncoding: 'base64',
-        ContentType: `image/jpg`
+        ContentType: `audio/mp3`
       };
       s3.upload(params, function(err, data) {
           if (err) {
             console.log(err)
             reject(err)
+            return false
           }
-        resolve(`Foto subida. ${data.Location}`)
+        resolve(`Audio subido. ${data.Location}`)
+        return true
       });
     })
   }
@@ -798,6 +807,64 @@ app.post('/setHistories', async function(req,res){
     }
   });
 });
-app.get('/', async function(req,res){
-  res.send("hola");
+app.post("/importar",async function(req,res){
+  
+  let a="https://librossemi1.s3.us-east-2.amazonaws.com/"+req.body.libro
+  console.log(a)
+  file =fs.createWriteStream("pdf/file.pdf");
+  https.get(a, async function(response){
+    response.pipe(file)
+  })
+  res.send({status:true})
+})
+
+app.get("/extraer",async function(req,res){
+  var cad="";
+  console.log("empezó")
+  pdfExtract.extract('pdf/file.pdf', options, (err, data) => {
+    if (err) return console.log(err);
+    data=JSON.stringify(data.pages);
+    let contenido=JSON.parse(data)
+
+    contenido.forEach(element => {
+    
+      let array=element.content
+      array.forEach(st=>{
+       cad+=st.str
+      })
+    });
+    res.send({texto:cad})
+  });
 });
+
+app.post("/audio",async (req,res)=>{
+  const input ={
+    Text:req.body.audio,
+    OutputFormat: "mp3",
+    VoiceId: "Miguel"
+}
+  Polly.synthesizeSpeech(input,(err,data)=>{
+    if(err){
+        res.send(err)
+        return
+    }
+    if(data.AudioStream instanceof Buffer){
+      const valor= SubirAudio(data.AudioStream);
+        if (valor){
+          res.send({status:true})
+          return
+        }
+      res.send({status:false})
+      /*fs.writeFile("audio.mp3",data.AudioStream, (err)=>{
+          if (err){
+              res.send(err)
+              return
+          }
+          res.send("Success")
+      });*/
+      //res.send(data.AudioStream)
+      //return
+    }
+    //res.send("error")
+  }) 
+})
