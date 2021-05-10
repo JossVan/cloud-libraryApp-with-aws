@@ -111,9 +111,29 @@ export class ApiService {
       Contenido:Contenido
     })
   }
-  convertir(file:Blob){
-    return this.httpClient.post(this.path+"/convertir",{
-      file:file,
+
+  importar(libro):Observable<any>{
+    
+    return this.httpClient.post(this.path+"/importar",{
+      libro:libro
+    });
+  }
+
+  obtener():Observable<any>{
+   
+    return this.httpClient.get(this.path+"/extraer");
+  }
+
+  audio(texto):Observable<any>{
+    return this.httpClient.post(this.path+"/audio",{
+      audio:texto
     })
   }
+
+  traduccion(idioma,texto):Observable<any>{
+    return this.httpClient.post("https://799mtfoahj.execute-api.us-east-2.amazonaws.com/traducir",{
+      "Texto":texto,
+      "Idioma":idioma
+    }
+    )}
 }

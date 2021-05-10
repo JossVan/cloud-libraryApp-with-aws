@@ -23,6 +23,8 @@ import { RegistroComponent } from './registro/registro.component';
 import {ApiService} from './services/api.service';
 import {ToastrModule} from 'ngx-toastr';
 import { BotComponent } from './bot/bot.component';
+import { AudioComponent } from './audio/audio.component';
+import { TraduccionComponent } from './traduccion/traduccion.component';
 
 Amplify.configure({
   Auth: {
@@ -78,7 +80,9 @@ Amplify.addPluggable(new AmazonAIPredictionsProvider());
     FooterComponent,
     RegistroComponent,
     CrearComponent,
-    BotComponent
+    BotComponent,
+    AudioComponent,
+    TraduccionComponent
   ],
   imports: [
     BrowserModule,

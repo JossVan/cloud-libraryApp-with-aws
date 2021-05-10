@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+<div class="component">
+    <form style="padding-top: 10%;">
+        <label for="formGroupExampleInput">Continua con tu historia...</label>
+        <select class="form-control" id="selector" style="color:#000000" name="seleccion" [(ngModel)]="seleccion">
+         <option>Inglés</option>
+        <option>Español</option>
+        <option>Italiano</option>
+        <option>Alemán</option>
+        <option>Francés</option>
+       </select>
+       <br>
+       <div class="form-group">
+        <label for="exampleFormControlTextarea1">Empieza tu historia aquí</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" style="color:#000000" rows="15" name="contenido" [(ngModel)]="contenido" readonly></textarea>
+      </div>
+      <button type="button" class="btn btn-primary btn-lg btn-block" (click)="traducir()">Traducir</button>
+       </form>
+</div>
+<app-footer></app-footer>

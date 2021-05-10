@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class BibliotecaComponent implements OnInit {
   user:any=[]
   array:any[]=[];
+  text:string=""
   constructor(private api:ApiService,private router:Router, private toastr:ToastrService) {
     //this.user=JSON.parse(localStorage.getItem("usuario"));
     
@@ -31,7 +32,7 @@ export class BibliotecaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+  
   }
 
   ir(comp){
@@ -70,4 +71,78 @@ export class BibliotecaComponent implements OnInit {
       }
     })
   }
+  
+  async extraerTexto(comp){
+   
+    let datos={
+      libro:comp
+    }
+   const traer=await fetch("http://localhost:8000/importar",{
+      body:JSON.stringify(datos),
+      headers:{
+        "Content-Type":"application/json"
+      },
+      method: "POST"
+   });
+  const respuesta=await traer.json();
+   if (respuesta.status){
+     alert("Se trajo el libro local")
+
+     //Se extrae el texto
+     const traer2=await fetch("http://localhost:8000/extraer",{
+      method: "GET"
+   });
+  const respuesta2=await traer2.json();
+   this.text=respuesta2.texto
+   alert(respuesta2.texto)
+    let datos2={
+      audio:this.text
+    }
+    const traer3=await fetch("http://localhost:8000/audio",{
+      body:JSON.stringify(datos2),
+      headers:{
+        "Content-Type":"application/json"
+      },
+      method: "POST"
+    });
+    const respuesta3=await traer3.json();
+    if (respuesta3.status){
+      this.array.forEach(elemento=>{
+        if (elemento.Libro==comp){
+          localStorage.setItem("portada",elemento.Portada)
+          this.router.navigate(["/audio"])
+        }
+      })
+      console.log("Se subió a s3")
+    }
+   }
+  }
+
+  async traducir(comp){
+    let datos={
+      libro:comp
+    }
+   const traer=await fetch("http://localhost:8000/importar",{
+      body:JSON.stringify(datos),
+      headers:{
+        "Content-Type":"application/json"
+      },
+      method: "POST"
+   });
+  const respuesta=await traer.json();
+   if (respuesta.status){
+     alert("Se trajo el libro local")
+
+     //Se extrae el texto
+     const traer2=await fetch("http://localhost:8000/extraer",{
+      method: "GET"
+   });
+  const respuesta2=await traer2.json();
+   this.text=respuesta2.texto
+   localStorage.setItem("texto",this.text);
+   this.router.navigate(["/traduccion"]);
+  }
+
+  }
+
 }

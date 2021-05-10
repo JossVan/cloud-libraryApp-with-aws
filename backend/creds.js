@@ -26,6 +26,11 @@ let aws_keys = {
         accessKeyId: "AKIARF7Z3QHOWNI75TJD",
         secretAccessKey: "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" 
     },
+    polly:{
+        region: 'us-east-2',
+        accessKeyId: "AKIA6GGYZM7UO63PUC6O",
+        secretAccessKey: "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" 
+    }
 
 }
 module.exports = aws_keys
