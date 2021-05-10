@@ -11,6 +11,8 @@ import {CrearComponent} from './crear/crear.component';
 import {BotComponent} from './bot/bot.component';
 import {LoginComponent} from './login/login.component';
 import {RegistroComponent} from './registro/registro.component';
+import {AudioComponent} from './audio/audio.component';
+import {TraduccionComponent} from './traduccion/traduccion.component';
 const routes: Routes = [
   {
     path:'home',
@@ -60,6 +62,14 @@ const routes: Routes = [
   {
     path:'registro',
     component:RegistroComponent
+  },
+  {
+    path:'audio',
+    component:AudioComponent
+  },
+  {
+    path:'traduccion',
+    component:TraduccionComponent
   }
 ];
 
