@@ -2,34 +2,34 @@ let aws_keys = {
     dynamodb: {
         apiVersion: '2012-08-10',
         region: 'us-west-2',
-        accessKeyId: "AKIA6GGYZM7UAQENEUUM",
-        secretAccessKey: "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"
+        accessKeyId: "",
+        secretAccessKey: ""
     },
     s3: {
         region: 'us-west-2',
-        accessKeyId: "AKIA6GGYZM7UBYQRRJ7G",
-        secretAccessKey: "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"
+        accessKeyId: "",
+        secretAccessKey: ""
     
     },
     rekognition:{
         region: 'us-east-2',
-        accessKeyId: 'AKIARF7Z3QHOZSQGUUEZ',
-        secretAccessKey: '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'
+        accessKeyId: '',
+        secretAccessKey: ''
     },
     translate: {
         region: 'us-east-2',
-        accessKeyId: "AKIA6GGYZM7UIZ6O5MPG",
-        secretAccessKey: "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" 
+        accessKeyId: "",
+        secretAccessKey: "" 
     },
     lex: {
         region: 'us-east-2',
-        accessKeyId: "AKIARF7Z3QHOWNI75TJD",
-        secretAccessKey: "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" 
+        accessKeyId: "",
+        secretAccessKey: "" 
     },
     polly:{
         region: 'us-east-2',
-        accessKeyId: "AKIA6GGYZM7UO63PUC6O",
-        secretAccessKey: "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" 
+        accessKeyId: "",
+        secretAccessKey: "" 
     }
 
 }
